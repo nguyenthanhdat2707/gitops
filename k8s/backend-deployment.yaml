@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-demo
+  template:
+    metadata:
+      labels:
+        app: backend-demo
+    spec:
+      containers:
+        - name: backend
+          image: node:20-alpine
+          workingDir: /app
+          command:
+            - sh
+            - -c
+            - |
+              cp /config/* /app/
+              npm install --omit=dev
+              npm start
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: backend-code
+              mountPath: /config
+            - name: app-dir
+              mountPath: /app
+      volumes:
+        - name: backend-code
+          configMap:
+            name: backend-demo-code
+        - name: app-dir
+          emptyDir: {}

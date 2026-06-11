@@ -1,0 +1,37 @@
+apiVersion: v1
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Web Demo v1</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <main>
+        <h1>Web Demo v1</h1>
+        <p>Hello Kubernetes</p>
+      </main>
+    </body>
+    </html>
+  style.css: |
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    main {
+      background: white;
+      display: inline-block;
+      padding: 32px;
+      border-radius: 12px;
+    }
+
+    h1 {
+      color: #2563eb;
+    }
+kind: ConfigMap
+metadata:
+  name: web-demo-static
