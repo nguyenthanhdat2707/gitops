@@ -8,7 +8,7 @@ spec:
   - name: api-5xx-error-rate
     interval: 20s
     count: 1
-    failureLimit: 1
+    failureLimit: 0
     successCondition: result[0] < 0.10
     failureCondition: result[0] >= 0.10
     provider:
