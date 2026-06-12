@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: api-slo-alerts
+  namespace: demo
+  labels:
+    app: api
+    release: kube-prometheus-stack
+spec:
+  groups:
+  - name: api.slo
+    rules:
+    - alert: APIHigh5xxRate
+      expr: |
+        (
+          sum(rate(flask_http_request_total{namespace="demo",service="api",status=~"5.."}[1m]))
+          /
+          clamp_min(sum(rate(flask_http_request_total{namespace="demo",service="api"}[1m])), 0.001)
+        ) > 0.10
+      for: 1m
+      labels:
+        severity: warning
+        slo: api-availability
+      annotations:
+        summary: "API 5xx error rate is above 10%"
+        description: "More than 10% of API requests are returning 5xx for 1 minute."
